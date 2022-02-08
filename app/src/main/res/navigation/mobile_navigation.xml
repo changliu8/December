@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_home">
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.example.december.ui.home.HomeFragment"
+        android:label="@string/title_home"
+        tools:layout="@layout/fragment_home"/>
+
+    <fragment
+        android:id="@+id/navigation_pets"
+        android:name="com.example.december.ui.pets.PetsFragment"
+        android:label="@string/title_pets"
+        tools:layout="@layout/fragment_pets"/>
+
+    <fragment
+        android:id="@+id/navigation_shop"
+        android:name="com.example.december.ui.shop.ShopFragment"
+        android:label="@string/title_shop"
+        tools:layout="@layout/fragment_shop"/>
+
+    <fragment
+        android:id="@+id/navigation_announcement"
+        android:name="com.example.december.ui.announcement.AnnouncementFragment"
+        android:label="@string/title_announcement"
+        tools:layout="@layout/fragment_announcement"/>
+
+    <fragment
+        android:id="@+id/navigation_profile"
+        android:name="com.example.december.ui.profile.ProfileFragment"
+        android:label="@string/title_profile"
+        tools:layout="@layout/fragment_profile"/>
+</navigation>

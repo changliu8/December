@@ -1,0 +1,40 @@
+<resources>
+    <string name="app_name">December</string>
+    <string name="title_home">Home</string>
+    <string name="title_pets">Pets</string>
+    <string name="title_shop">Shop</string>
+    <string name="title_announcement">Announcement</string>
+    <string name="title_profile">Profile</string>
+    <string name="login_reset">FORGET PASSWORD?</string>
+    <string name="login_register">CREATE AN ACCOUNT</string>
+    <string name="reset_password_reset">PASSWORD RESET</string>
+    <string name="reset_hint">Please enter the email you used to register before</string>
+    <string name="submit">Submit</string>
+    <string name="sent">Password reset Email has been sent</string>
+    <string name="thanks">Thank you for donating to December. Because of your generosity, we were able to keep this shelter running. With your help, we will continue to provide a living place and food supplies to these animals!</string>
+    <string name="home_title">About December</string>
+    <string name="home_about">
+        December is a non-profitable, community-based organization, it was created with the focus to provide quality care for animals in need until their forever homes could be found. With experience in animal rescue we knew that we could form a strong team and we could have great success working toward our objectives. we have been providing a safe haven for sick, injured and homeless animals in Ottawa.
+    </string>
+    <string name="home_contact">Contact us</string>
+    <string name="home_gallery">Gallery</string>
+    <string name="contact_phone">📞 123-456-7890</string>
+    <string name="contact_mail">📧 december@gmail.com</string>
+    <string name="home_visit">Visit us</string>
+    <string name="address">255 West Hunt Club Road</string>
+    <string name="home_operation">Hours of operation</string>
+    <string name="hours"><b>Monday - Sunday:</b> 7 a.m. to 7 p.m.</string>
+    <string-array name="pets_array">
+        <item>All</item>
+        <item>cat</item>
+        <item>Dog</item>
+    </string-array>
+    <string name="signout">Sign Out</string>
+    <string name="proName">UserName: N/A</string>
+    <string name="proEmail">Email: N/A</string>
+    <string name="proAdopted">🐕 Adopted Animals: N/A</string>
+    <string name="proDonation">♥ Total Donation: N/A</string>
+    <string name="proComment">📋 Comments: N/A</string>
+
+
+</resources>

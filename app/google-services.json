@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "729488599565",
+    "project_id": "december-eltbj",
+    "storage_bucket": "december-eltbj.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:729488599565:android:ea8e2be49aef80d247c344",
+        "android_client_info": {
+          "package_name": "com.example.december"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "729488599565-a14fd5g8hcf35er8aqsu7vgpr2tsb54b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.december",
+            "certificate_hash": "8d92f9f9a778233e799fd69fda7e3408d8c6004e"
+          }
+        },
+        {
+          "client_id": "729488599565-cnde6uv695c060vpvc26vqjnfrq427q3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBAQzdVu7MrZy3I4daqiQZCATMxxSCihtg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "729488599565-cnde6uv695c060vpvc26vqjnfrq427q3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
