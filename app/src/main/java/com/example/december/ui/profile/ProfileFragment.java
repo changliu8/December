@@ -3,6 +3,7 @@ package com.example.december.ui.profile;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -25,7 +26,9 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.december.LoginActivity;
 import com.example.december.R;
+import com.example.december.RegisterActivity;
 import com.example.december.databinding.FragmentProfileBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -116,6 +119,7 @@ public class ProfileFragment extends Fragment {
             public void onClick(View v) {
                 System.out.println("CLICKED");
                 FirebaseAuth.getInstance().signOut();
+                startActivity(new Intent(getActivity().getApplicationContext(), LoginActivity.class));
             }
         });
 
