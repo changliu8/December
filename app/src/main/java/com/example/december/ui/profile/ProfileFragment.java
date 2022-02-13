@@ -74,7 +74,7 @@ public class ProfileFragment extends Fragment {
         mComments = root.findViewById(R.id.profile_comments);
         mAdoptedLinear = root.findViewById(R.id.profile_adopted_linear);
         mDonationLinear = root.findViewById(R.id.profile_donation_linear);
-
+        mCommentsLinear = root.findViewById(R.id.profile_comment_linear);
         mUsername.setText("UserName: "+FirebaseAuth.getInstance().getCurrentUser().getDisplayName().toString());
         mEmail.setText("Email: "+FirebaseAuth.getInstance().getCurrentUser().getEmail().toString());
 
@@ -88,9 +88,10 @@ public class ProfileFragment extends Fragment {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         List<String> adopted_group = (List<String>) document.getData().get("Adopted");
-                        //List<String> command_group = (List<String>) document.getData().get("Comment");
+                        List<String> command_group = (List<String>) document.getData().get("Comments");
                         mAdopted.setText("🐕 Adopted Animals: "+adopted_group.size());
                         mDonation.setText("❤ Total Donation: "+document.getData().get("TotalDonation").toString());
+                        mComments.setText("📋 Comments: "+command_group.size());
                     }
 
                 }
@@ -124,7 +125,7 @@ public class ProfileFragment extends Fragment {
                             if (document.exists()) {
 
                                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                                builder.setTitle("Total Donations");
+                                builder.setTitle("Adopted");
                                 LinearLayout info_linear = new LinearLayout(getActivity());
                                 info_linear.setOrientation(LinearLayout.VERTICAL);
 
@@ -270,6 +271,54 @@ public class ProfileFragment extends Fragment {
                     }
                 });
 
+
+            }
+        });
+
+        //comments linear
+        mCommentsLinear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()){
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                                builder.setTitle("Comments");
+                                LinearLayout info_linear = new LinearLayout(getActivity());
+                                info_linear.setOrientation(LinearLayout.VERTICAL);
+
+                                List<String> adopted_group = (List<String>) document.getData().get("Comments");
+                                for(int i =0;i<adopted_group.size();i++){
+                                    TextView comment = new TextView(getActivity());
+                                    comment.setText(i+1+". "+adopted_group.get(i).toString());
+                                    comment.setTextSize(20);
+                                    LinearLayout.LayoutParams textParam = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                                    textParam.setMargins(80,20,80,10);
+                                    info_linear.setLayoutParams(textParam);
+                                    info_linear.setPadding(80,20,80,10);
+                                    TextView line = new TextView(getActivity());
+                                    comment.setBackground(getResources().getDrawable(R.drawable.my_border));
+                                    line.setText("222222");
+                                    line.setVisibility(View.INVISIBLE);
+                                    info_linear.addView(line);
+                                    info_linear.addView(comment);
+                                }
+                                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                                    }
+                                });
+                                builder.setView(info_linear);
+                                builder.show();
+
+                            }
+                        }
+                    }
+                });
 
             }
         });
