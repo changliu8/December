@@ -246,8 +246,12 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+
     }
 
+    @Override
+    public void onBackPressed() {
+    }
 
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();

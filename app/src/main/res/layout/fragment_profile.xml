@@ -72,6 +72,7 @@
                 android:paddingBottom="5dp">
 
                 <LinearLayout
+                    android:id="@+id/profile_adopted_linear"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="horizontal">
@@ -103,6 +104,7 @@
                     tools:background="@drawable/my_border" />
 
                 <LinearLayout
+                    android:id="@+id/profile_donation_linear"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="horizontal">
@@ -133,6 +135,7 @@
                     tools:background="@drawable/my_border" />
 
                 <LinearLayout
+                    android:id="@+id/profile_comment_linear"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="horizontal">

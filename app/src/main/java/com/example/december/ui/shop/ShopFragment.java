@@ -114,7 +114,7 @@ public class ShopFragment extends Fragment {
                                             Item_layout.setOrientation(LinearLayout.HORIZONTAL);
                                             Item_layout.setGravity(Gravity.CENTER);
                                             Item_layout.setBackground(getResources().getDrawable(R.drawable.my_border));
-                                            LinearLayout.LayoutParams item_param = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT,1);
+                                            LinearLayout.LayoutParams item_param = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT,1);
                                             item_param.setMargins(30,30,30,30);
                                             Item_layout.setLayoutParams(item_param);
                                             Item_layout.setPadding(10,10,10,10);
