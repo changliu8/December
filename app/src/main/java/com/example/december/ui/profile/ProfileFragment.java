@@ -1,6 +1,7 @@
 package com.example.december.ui.profile;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -77,7 +78,9 @@ public class ProfileFragment extends Fragment {
         mCommentsLinear = root.findViewById(R.id.profile_comment_linear);
         mUsername.setText("UserName: "+FirebaseAuth.getInstance().getCurrentUser().getDisplayName().toString());
         mEmail.setText("Email: "+FirebaseAuth.getInstance().getCurrentUser().getEmail().toString());
-
+        ProgressDialog pd = new ProgressDialog(getActivity());
+        pd.setMessage("Fetching...");
+        pd.show();
         String userEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail().toString();
 
         DocumentReference docRef = db.collection("Users").document(userEmail);
@@ -92,6 +95,9 @@ public class ProfileFragment extends Fragment {
                         mAdopted.setText("🐕 Adopted Animals: "+adopted_group.size());
                         mDonation.setText("❤ Total Donation: "+document.getData().get("TotalDonation").toString());
                         mComments.setText("📋 Comments: "+command_group.size());
+                        if (pd.isShowing()){
+                            pd.dismiss();
+                        }
                     }
 
                 }
