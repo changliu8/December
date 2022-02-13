@@ -82,6 +82,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class PetsFragment extends Fragment implements AdapterView.OnItemSelectedListener {
@@ -419,7 +420,7 @@ public class PetsFragment extends Fragment implements AdapterView.OnItemSelected
                         @Override
                         public void onSuccess(ListResult listResult) {
                             for(StorageReference pic : listResult.getItems()){
-                                if(pic.toString().contains(choice)){
+                                if(pic.toString().toUpperCase().contains(choice.toUpperCase(Locale.ROOT))){
                                     System.out.println(choice);
                                     try {
                                         System.out.println(pic);
