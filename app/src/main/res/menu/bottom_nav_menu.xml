@@ -17,9 +17,9 @@
         android:title="@string/title_shop"/>
 
     <item
-        android:id="@+id/navigation_announcement"
-        android:icon="@drawable/ic_outline_announcement_24"
-        android:title="@string/title_announcement"/>
+        android:id="@+id/navigation_comment"
+        android:icon="@drawable/ic_outline_comment_24"
+        android:title="@string/title_comment" />
 
     <item
         android:id="@+id/navigation_profile"

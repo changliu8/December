@@ -1,4 +1,4 @@
-package com.example.december.ui.announcement;
+package com.example.december.ui.comment;
 
 import android.os.Bundle;
 import android.view.Gravity;
@@ -18,7 +18,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.december.R;
-import com.example.december.databinding.FragmentAnnouncementBinding;
+import com.example.december.databinding.FragmentCommentBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -42,10 +42,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AnnouncementFragment extends Fragment {
+public class CommentFragment extends Fragment {
 
-    private AnnouncementViewModel AnnouncementViewModel;
-    private FragmentAnnouncementBinding binding;
+    private CommentViewModel CommentViewModel;
+    private FragmentCommentBinding binding;
     private LinearLayout commentsLinear;
     private FirebaseStorage storage = FirebaseStorage.getInstance();
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -54,10 +54,10 @@ public class AnnouncementFragment extends Fragment {
     private Button submitCommentButton;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        AnnouncementViewModel =
-                new ViewModelProvider(this).get(AnnouncementViewModel.class);
+        CommentViewModel =
+                new ViewModelProvider(this).get(CommentViewModel.class);
 
-        binding = FragmentAnnouncementBinding.inflate(inflater, container, false);
+        binding = FragmentCommentBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         commentsLinear = root.findViewById(R.id.commentsLinear);
         commentText = root.findViewById(R.id.comment_text);
