@@ -1,5 +1,6 @@
 package com.example.december.ui.comment;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -7,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -62,6 +64,9 @@ public class CommentFragment extends Fragment {
         commentsLinear = root.findViewById(R.id.commentsLinear);
         commentText = root.findViewById(R.id.comment_text);
         submitCommentButton = root.findViewById(R.id.submit_comment_button);
+        ProgressDialog pd = new ProgressDialog(getActivity());
+        pd.setMessage("Pulling the latest comment");
+        pd.show();
         db.collection("Comments").orderBy("time").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -100,6 +105,9 @@ public class CommentFragment extends Fragment {
                         comment_linear.addView(client_info_linear);
                         comment_linear.addView(user_comment_textview);
                         commentsLinear.addView(comment_linear);
+                    }
+                    if(pd.isShowing()){
+                        pd.dismiss();
                     }
                 }
             }
@@ -156,6 +164,7 @@ public class CommentFragment extends Fragment {
                                         comment_linear.addView(user_comment_textview);
                                         commentsLinear.addView(comment_linear);
                                     }
+                                    commentText.setText("");
                                 }
                             }
                         });
