@@ -25,6 +25,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -327,6 +328,7 @@ public class ProfileFragment extends Fragment {
                                     info_linear.addView(comment);
                                     comment.setTag(k);
 
+                                    int finalCount = count-1;
                                     comment.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
@@ -343,7 +345,10 @@ public class ProfileFragment extends Fragment {
                                                             docRef.update(user_comment_list_update);
                                                             CollectionReference CommentsRef = db.collection("Comments");
                                                             CommentsRef.document(comment.getTag().toString()).delete();
-                                                            info_linear.removeAllViews();
+                                                            info_linear.removeView(comment);
+                                                            int tmp = finalCount;
+                                                            tmp-=1;
+                                                            mComments.setText("📋 Comments: "+tmp);
                                                         }
                                                     }
                                                 }
