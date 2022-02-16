@@ -1,5 +1,6 @@
-package com.example.december.ui.announcement;
+package com.example.december.ui.comment;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -7,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -18,7 +20,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.december.R;
-import com.example.december.databinding.FragmentAnnouncementBinding;
+import com.example.december.databinding.FragmentCommentBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -42,10 +44,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AnnouncementFragment extends Fragment {
+public class CommentFragment extends Fragment {
 
-    private AnnouncementViewModel AnnouncementViewModel;
-    private FragmentAnnouncementBinding binding;
+    private CommentViewModel CommentViewModel;
+    private FragmentCommentBinding binding;
     private LinearLayout commentsLinear;
     private FirebaseStorage storage = FirebaseStorage.getInstance();
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -54,14 +56,17 @@ public class AnnouncementFragment extends Fragment {
     private Button submitCommentButton;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        AnnouncementViewModel =
-                new ViewModelProvider(this).get(AnnouncementViewModel.class);
+        CommentViewModel =
+                new ViewModelProvider(this).get(CommentViewModel.class);
 
-        binding = FragmentAnnouncementBinding.inflate(inflater, container, false);
+        binding = FragmentCommentBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         commentsLinear = root.findViewById(R.id.commentsLinear);
         commentText = root.findViewById(R.id.comment_text);
         submitCommentButton = root.findViewById(R.id.submit_comment_button);
+        ProgressDialog pd = new ProgressDialog(getActivity());
+        pd.setMessage("Pulling the latest comment");
+        pd.show();
         db.collection("Comments").orderBy("time").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -100,6 +105,9 @@ public class AnnouncementFragment extends Fragment {
                         comment_linear.addView(client_info_linear);
                         comment_linear.addView(user_comment_textview);
                         commentsLinear.addView(comment_linear);
+                    }
+                    if(pd.isShowing()){
+                        pd.dismiss();
                     }
                 }
             }
@@ -156,6 +164,7 @@ public class AnnouncementFragment extends Fragment {
                                         comment_linear.addView(user_comment_textview);
                                         commentsLinear.addView(comment_linear);
                                     }
+                                    commentText.setText("");
                                 }
                             }
                         });

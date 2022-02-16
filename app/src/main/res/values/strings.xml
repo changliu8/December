@@ -3,7 +3,7 @@
     <string name="title_home">Home</string>
     <string name="title_pets">Pets</string>
     <string name="title_shop">Shop</string>
-    <string name="title_announcement">Announcement</string>
+    <string name="title_comment">Comments</string>
     <string name="title_profile">Profile</string>
     <string name="login_reset">FORGET PASSWORD?</string>
     <string name="login_register">CREATE AN ACCOUNT</string>
