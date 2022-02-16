@@ -55,7 +55,7 @@ public class CommentFragment extends Fragment {
     StorageReference storageRef;
     private TextView commentText;
     private Button submitCommentButton;
-    private String comment = "";
+    private String comment_ID = "";
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         CommentViewModel =
@@ -174,11 +174,11 @@ public class CommentFragment extends Fragment {
                                                 if(task.isSuccessful()){
                                                     DocumentSnapshot document = task.getResult();
                                                     if(document.exists()){
-                                                        List<String> comment_group = (List<String>) document.getData().get("Comments");
-                                                        comment_group.add(comment_content);
-                                                        Map<String, Object> comment_list_upadte = new HashMap<>();
-                                                        comment_list_upadte.put("Comments", comment_group);
-                                                        docRef.update(comment_list_upadte);
+                                                        Map<String,String> comment_group = (Map<String,String>) document.getData().get("Comments");
+                                                        comment_group.put(documentReference.getId(),comment_content);
+                                                        Map<String, Object> comment_list_update = new HashMap<>();
+                                                        comment_list_update.put("Comments", comment_group);
+                                                        docRef.update(comment_list_update);
                                                     }
                                                 }
                                                 commentText.setText("");
