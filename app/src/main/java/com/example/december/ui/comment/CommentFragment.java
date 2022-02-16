@@ -42,6 +42,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class CommentFragment extends Fragment {
@@ -54,6 +55,7 @@ public class CommentFragment extends Fragment {
     StorageReference storageRef;
     private TextView commentText;
     private Button submitCommentButton;
+    private String comment = "";
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         CommentViewModel =
@@ -163,8 +165,26 @@ public class CommentFragment extends Fragment {
                                         comment_linear.addView(client_info_linear);
                                         comment_linear.addView(user_comment_textview);
                                         commentsLinear.addView(comment_linear);
+
+                                        String userEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail().toString();
+                                        DocumentReference docRef = db.collection("Users").document(userEmail);
+                                        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                if(task.isSuccessful()){
+                                                    DocumentSnapshot document = task.getResult();
+                                                    if(document.exists()){
+                                                        List<String> comment_group = (List<String>) document.getData().get("Comments");
+                                                        comment_group.add(comment_content);
+                                                        Map<String, Object> comment_list_upadte = new HashMap<>();
+                                                        comment_list_upadte.put("Comments", comment_group);
+                                                        docRef.update(comment_list_upadte);
+                                                    }
+                                                }
+                                                commentText.setText("");
+                                            }
+                                        });
                                     }
-                                    commentText.setText("");
                                 }
                             }
                         });
