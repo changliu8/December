@@ -1,5 +1,7 @@
 package com.example.december.ui.profile;
 
+import static java.lang.Thread.sleep;
+
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -23,6 +25,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -34,6 +37,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -46,7 +50,9 @@ import org.w3c.dom.Text;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ProfileFragment extends Fragment {
 
@@ -63,6 +69,7 @@ public class ProfileFragment extends Fragment {
     private LinearLayout mAdoptedLinear;
     private LinearLayout mDonationLinear;
     private LinearLayout mCommentsLinear;
+    private Map<String,String> user_comments_group;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -94,7 +101,7 @@ public class ProfileFragment extends Fragment {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         List<String> adopted_group = (List<String>) document.getData().get("Adopted");
-                        List<String> command_group = (List<String>) document.getData().get("Comments");
+                        Map<String,String> command_group = (Map<String,String>) document.getData().get("Comments");
                         mAdopted.setText("🐕 Adopted Animals: "+adopted_group.size());
                         mDonation.setText("❤ Total Donation: "+document.getData().get("TotalDonation").toString());
                         mComments.setText("📋 Comments: "+command_group.size());
@@ -300,10 +307,14 @@ public class ProfileFragment extends Fragment {
                                 LinearLayout info_linear = new LinearLayout(getActivity());
                                 info_linear.setOrientation(LinearLayout.VERTICAL);
 
-                                List<String> adopted_group = (List<String>) document.getData().get("Comments");
-                                for(int i =0;i<adopted_group.size();i++){
+                                Map<String,String> comments_group = (Map<String,String>) document.getData().get("Comments");
+                                int count = 1;
+                                for (Map.Entry<String, String> entry : comments_group.entrySet()) {
+                                    String k = entry.getKey();
+                                    String v = entry.getValue();
                                     TextView comment = new TextView(getActivity());
-                                    comment.setText(i+1+". "+adopted_group.get(i).toString());
+                                    comment.setText(count+". "+v.toString());
+                                    count+=1;
                                     comment.setTextSize(20);
                                     LinearLayout.LayoutParams textParam = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                                     textParam.setMargins(80,20,80,10);
@@ -315,16 +326,47 @@ public class ProfileFragment extends Fragment {
                                     line.setVisibility(View.INVISIBLE);
                                     info_linear.addView(line);
                                     info_linear.addView(comment);
+                                    comment.setTag(k);
+
+                                    int finalCount = count-1;
+                                    comment.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                    if(task.isSuccessful()){
+                                                        DocumentSnapshot document = task.getResult();
+                                                        if(document.exists()){
+                                                            Map<String,String> user_comments_group = (Map<String,String>) document.getData().get("Comments");
+                                                            user_comments_group.remove(comment.getTag());
+                                                            Map<String, Object> user_comment_list_update = new HashMap<>();
+                                                            user_comment_list_update.put("Comments", user_comments_group);
+                                                            docRef.update(user_comment_list_update);
+                                                            CollectionReference CommentsRef = db.collection("Comments");
+                                                            CommentsRef.document(comment.getTag().toString()).delete();
+                                                            info_linear.removeView(comment);
+                                                            int tmp = finalCount;
+                                                            tmp-=1;
+                                                            mComments.setText("📋 Comments: "+tmp);
+                                                        }
+                                                    }
+                                                }
+                                            });
+                                        }
+                                    });
                                 }
                                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
+                                        DocumentSnapshot document = task.getResult();
+                                        if(document.exists()){
 
+                                        }
                                     }
                                 });
                                 builder.setView(info_linear);
                                 builder.show();
-
                             }
                         }
                     }
