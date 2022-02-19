@@ -336,10 +336,29 @@ public class ProfileFragment extends Fragment {
                                     line.setVisibility(View.INVISIBLE);
                                     info_linear.addView(line);
                                     info_linear.addView(comment);
-                                    comment.setTag(k);
+                                    LinearLayout button_linear = new LinearLayout(getActivity());
+                                    button_linear.setOrientation(LinearLayout.HORIZONTAL);
+                                    button_linear.setGravity(Gravity.CENTER);
+                                    LinearLayout.LayoutParams button_linear_para = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                                    button_linear.setLayoutParams(button_linear_para);
+                                    button_linear_para.setMargins(0,20,0,20);
+                                    LinearLayout.LayoutParams button_para = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                                    button_para.setMargins(10,0,10,0);
+                                    Button edit_button = new Button(getActivity());
+                                    Button delete_button = new Button(getActivity());
+                                    edit_button.setText("Edit");
+                                    edit_button.setBackgroundColor(Color.GREEN);
+                                    delete_button.setText("Delete");
+                                    delete_button.setBackgroundColor(Color.RED);
+                                    edit_button.setLayoutParams(button_para);
+                                    delete_button.setLayoutParams(button_para);
+                                    button_linear.addView(edit_button);
+                                    button_linear.addView(delete_button);
+                                    info_linear.addView(button_linear);
+                                    delete_button.setTag(k);
 
                                     int finalCount = count-1;
-                                    comment.setOnClickListener(new View.OnClickListener() {
+                                    delete_button.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
                                             docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -349,13 +368,14 @@ public class ProfileFragment extends Fragment {
                                                         DocumentSnapshot document = task.getResult();
                                                         if(document.exists()){
                                                             Map<String,String> user_comments_group = (Map<String,String>) document.getData().get("Comments");
-                                                            user_comments_group.remove(comment.getTag());
+                                                            user_comments_group.remove(delete_button.getTag());
                                                             Map<String, Object> user_comment_list_update = new HashMap<>();
                                                             user_comment_list_update.put("Comments", user_comments_group);
                                                             docRef.update(user_comment_list_update);
                                                             CollectionReference CommentsRef = db.collection("Comments");
-                                                            CommentsRef.document(comment.getTag().toString()).delete();
+                                                            CommentsRef.document(delete_button.getTag().toString()).delete();
                                                             info_linear.removeView(comment);
+                                                            info_linear.removeView(button_linear);
                                                             int tmp = finalCount;
                                                             tmp-=1;
                                                             mComments.setText("📋 Comments: "+tmp);
