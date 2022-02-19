@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
@@ -145,13 +146,16 @@ public class ProfileFragment extends Fragment {
                                 builder.setTitle("Adopted");
                                 LinearLayout info_linear = new LinearLayout(getActivity());
                                 info_linear.setOrientation(LinearLayout.VERTICAL);
+                                ScrollView info_scroll = new ScrollView(getActivity());
+                                info_scroll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT,1));
+
 
                                 List<String> adopted_group = (List<String>) document.getData().get("Adopted");
                                 for(int i =0;i<adopted_group.size();i++){
                                     TextView pet = new TextView(getActivity());
                                     pet.setText(i+1+". "+adopted_group.get(i).toString());
                                     pet.setTextSize(20);
-                                    LinearLayout.LayoutParams textParam = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                                    LinearLayout.LayoutParams textParam = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                                     textParam.setMargins(80,20,80,10);
                                     info_linear.setLayoutParams(textParam);
                                     info_linear.setPadding(80,20,80,10);
@@ -230,7 +234,8 @@ public class ProfileFragment extends Fragment {
 
                                     }
                                 });
-                                builder.setView(info_linear);
+                                info_scroll.addView(info_linear);
+                                builder.setView(info_scroll);
                                 builder.show();
 
                             }
@@ -257,13 +262,16 @@ public class ProfileFragment extends Fragment {
                                 builder.setTitle("Total Donations");
                                 LinearLayout info_linear = new LinearLayout(getActivity());
                                 info_linear.setOrientation(LinearLayout.VERTICAL);
+                                ScrollView info_scroll = new ScrollView(getActivity());
+                                info_scroll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT,1));
+
 
                                 List<String> adopted_group = (List<String>) document.getData().get("Donation");
                                 for(int i =0;i<adopted_group.size();i++){
                                     TextView donation = new TextView(getActivity());
                                     donation.setText(i+1+". "+adopted_group.get(i).toString());
                                     donation.setTextSize(20);
-                                    LinearLayout.LayoutParams textParam = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                                    LinearLayout.LayoutParams textParam = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                                     textParam.setMargins(80,20,80,10);
                                     info_linear.setLayoutParams(textParam);
                                     info_linear.setPadding(80,20,80,10);
@@ -280,7 +288,8 @@ public class ProfileFragment extends Fragment {
 
                                     }
                                 });
-                                builder.setView(info_linear);
+                                info_scroll.addView(info_linear);
+                                builder.setView(info_scroll);
                                 builder.show();
 
                             }
@@ -306,7 +315,8 @@ public class ProfileFragment extends Fragment {
                                 builder.setTitle("Comments");
                                 LinearLayout info_linear = new LinearLayout(getActivity());
                                 info_linear.setOrientation(LinearLayout.VERTICAL);
-
+                                ScrollView info_scroll = new ScrollView(getActivity());
+                                info_scroll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT,1));
                                 Map<String,String> comments_group = (Map<String,String>) document.getData().get("Comments");
                                 int count = 1;
                                 for (Map.Entry<String, String> entry : comments_group.entrySet()) {
@@ -316,7 +326,7 @@ public class ProfileFragment extends Fragment {
                                     comment.setText(count+". "+v.toString());
                                     count+=1;
                                     comment.setTextSize(20);
-                                    LinearLayout.LayoutParams textParam = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                                    LinearLayout.LayoutParams textParam = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                                     textParam.setMargins(80,20,80,10);
                                     info_linear.setLayoutParams(textParam);
                                     info_linear.setPadding(80,20,80,10);
@@ -365,7 +375,8 @@ public class ProfileFragment extends Fragment {
                                         }
                                     }
                                 });
-                                builder.setView(info_linear);
+                                info_scroll.addView(info_linear);
+                                builder.setView(info_scroll);
                                 builder.show();
                             }
                         }
