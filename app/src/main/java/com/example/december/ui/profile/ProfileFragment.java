@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -37,6 +38,7 @@ import com.example.december.databinding.FragmentProfileBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.api.Distribution;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -376,9 +378,81 @@ public class ProfileFragment extends Fragment {
                                                             CommentsRef.document(delete_button.getTag().toString()).delete();
                                                             info_linear.removeView(comment);
                                                             info_linear.removeView(button_linear);
-                                                            int tmp = finalCount;
+                                                            int tmp = Integer.parseInt(mComments.getText().toString().substring(13));
                                                             tmp-=1;
                                                             mComments.setText("📋 Comments: "+tmp);
+                                                        }
+                                                    }
+                                                }
+                                            });
+                                        }
+                                    });
+                                    edit_button.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                    if(task.isSuccessful()){
+                                                        DocumentSnapshot document = task.getResult();
+                                                        if(document.exists()){
+                                                            Map<String,String> user_comments_group = (Map<String,String>) document.getData().get("Comments");
+                                                            AlertDialog.Builder edit_builder = new AlertDialog.Builder(getActivity());
+                                                            edit_builder.setTitle("Edit Comment");
+                                                            LinearLayout comment_edit_window = new LinearLayout(getActivity());
+                                                            comment_edit_window.setOrientation(LinearLayout.VERTICAL);
+                                                            EditText comment_text_for_edit = new EditText(getActivity());
+                                                            comment_text_for_edit.setText(user_comments_group.get(delete_button.getTag()));
+                                                            comment_edit_window.addView(comment_text_for_edit);
+                                                            edit_builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                                                @Override
+                                                                public void onClick(DialogInterface dialog, int which) {
+
+                                                                }
+                                                            });
+                                                            edit_builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                                                                @Override
+                                                                public void onClick(DialogInterface dialog, int which) {
+                                                                    //not null
+                                                                    if(comment_text_for_edit.getText().toString().length()>0){
+                                                                        user_comments_group.put(delete_button.getTag().toString(),comment_text_for_edit.getText().toString());
+                                                                        Map<String, Object> user_comment_list_update = new HashMap<>();
+                                                                        user_comment_list_update.put("Comments", user_comments_group);
+                                                                        docRef.update(user_comment_list_update);
+                                                                        CollectionReference CommentsRef = db.collection("Comments");
+                                                                        CommentsRef.document(delete_button.getTag().toString()).update("content",comment_text_for_edit.getText().toString());
+                                                                        String old_comment_content = comment.getText().toString();
+                                                                        int comment_counter = 0;
+                                                                        for(int i =0;i<old_comment_content.length();i++){
+                                                                            if(old_comment_content.charAt(i)!='.'){
+                                                                                comment_counter++;
+                                                                            }
+                                                                            else{
+                                                                                break;
+                                                                            }
+                                                                        }
+                                                                        comment.setText(old_comment_content.substring(0,comment_counter)+". "+comment_text_for_edit.getText().toString());
+                                                                    }
+                                                                    else{
+                                                                        Map<String,String> user_comments_group = (Map<String,String>) document.getData().get("Comments");
+                                                                        user_comments_group.remove(delete_button.getTag());
+                                                                        Map<String, Object> user_comment_list_update = new HashMap<>();
+                                                                        user_comment_list_update.put("Comments", user_comments_group);
+                                                                        docRef.update(user_comment_list_update);
+                                                                        CollectionReference CommentsRef = db.collection("Comments");
+                                                                        CommentsRef.document(delete_button.getTag().toString()).delete();
+                                                                        info_linear.removeView(comment);
+                                                                        info_linear.removeView(button_linear);
+                                                                        int tmp = Integer.parseInt(mComments.getText().toString().substring(13));
+                                                                        tmp-=1;
+                                                                        mComments.setText("📋 Comments: "+tmp);
+                                                                    }
+                                                                }
+                                                            });
+
+                                                            edit_builder.setView(comment_edit_window);
+                                                            edit_builder.show();
+
                                                         }
                                                     }
                                                 }
