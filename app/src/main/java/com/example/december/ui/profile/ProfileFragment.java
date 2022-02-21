@@ -318,7 +318,7 @@ public class ProfileFragment extends Fragment {
                                 LinearLayout info_linear = new LinearLayout(getActivity());
                                 info_linear.setOrientation(LinearLayout.VERTICAL);
                                 ScrollView info_scroll = new ScrollView(getActivity());
-                                info_scroll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT,1));
+                                info_scroll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 200,1));
                                 Map<String,String> comments_group = (Map<String,String>) document.getData().get("Comments");
                                 int count = 1;
                                 for (Map.Entry<String, String> entry : comments_group.entrySet()) {

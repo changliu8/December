@@ -35,6 +35,7 @@
     <string name="proAdopted">🐕 Adopted Animals: N/A</string>
     <string name="proDonation">♥ Total Donation: N/A</string>
     <string name="proComment">📋 Comments: N/A</string>
+    <string name="comment_comment">Comment:</string>
 
 
 </resources>
