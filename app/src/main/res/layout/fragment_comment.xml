@@ -40,7 +40,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="Name" />
+            android:text="@string/comment_comment" />
 
         <Button
             android:id="@+id/submit_comment_button"

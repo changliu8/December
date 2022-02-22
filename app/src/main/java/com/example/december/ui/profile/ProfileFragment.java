@@ -15,10 +15,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
@@ -36,6 +38,7 @@ import com.example.december.databinding.FragmentProfileBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.api.Distribution;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -145,13 +148,16 @@ public class ProfileFragment extends Fragment {
                                 builder.setTitle("Adopted");
                                 LinearLayout info_linear = new LinearLayout(getActivity());
                                 info_linear.setOrientation(LinearLayout.VERTICAL);
+                                ScrollView info_scroll = new ScrollView(getActivity());
+                                info_scroll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT,1));
+
 
                                 List<String> adopted_group = (List<String>) document.getData().get("Adopted");
                                 for(int i =0;i<adopted_group.size();i++){
                                     TextView pet = new TextView(getActivity());
                                     pet.setText(i+1+". "+adopted_group.get(i).toString());
                                     pet.setTextSize(20);
-                                    LinearLayout.LayoutParams textParam = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                                    LinearLayout.LayoutParams textParam = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                                     textParam.setMargins(80,20,80,10);
                                     info_linear.setLayoutParams(textParam);
                                     info_linear.setPadding(80,20,80,10);
@@ -230,7 +236,8 @@ public class ProfileFragment extends Fragment {
 
                                     }
                                 });
-                                builder.setView(info_linear);
+                                info_scroll.addView(info_linear);
+                                builder.setView(info_scroll);
                                 builder.show();
 
                             }
@@ -257,13 +264,16 @@ public class ProfileFragment extends Fragment {
                                 builder.setTitle("Total Donations");
                                 LinearLayout info_linear = new LinearLayout(getActivity());
                                 info_linear.setOrientation(LinearLayout.VERTICAL);
+                                ScrollView info_scroll = new ScrollView(getActivity());
+                                info_scroll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT,1));
+
 
                                 List<String> adopted_group = (List<String>) document.getData().get("Donation");
                                 for(int i =0;i<adopted_group.size();i++){
                                     TextView donation = new TextView(getActivity());
                                     donation.setText(i+1+". "+adopted_group.get(i).toString());
                                     donation.setTextSize(20);
-                                    LinearLayout.LayoutParams textParam = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                                    LinearLayout.LayoutParams textParam = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                                     textParam.setMargins(80,20,80,10);
                                     info_linear.setLayoutParams(textParam);
                                     info_linear.setPadding(80,20,80,10);
@@ -280,7 +290,8 @@ public class ProfileFragment extends Fragment {
 
                                     }
                                 });
-                                builder.setView(info_linear);
+                                info_scroll.addView(info_linear);
+                                builder.setView(info_scroll);
                                 builder.show();
 
                             }
@@ -306,7 +317,8 @@ public class ProfileFragment extends Fragment {
                                 builder.setTitle("Comments");
                                 LinearLayout info_linear = new LinearLayout(getActivity());
                                 info_linear.setOrientation(LinearLayout.VERTICAL);
-
+                                ScrollView info_scroll = new ScrollView(getActivity());
+                                info_scroll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 200,1));
                                 Map<String,String> comments_group = (Map<String,String>) document.getData().get("Comments");
                                 int count = 1;
                                 for (Map.Entry<String, String> entry : comments_group.entrySet()) {
@@ -316,7 +328,7 @@ public class ProfileFragment extends Fragment {
                                     comment.setText(count+". "+v.toString());
                                     count+=1;
                                     comment.setTextSize(20);
-                                    LinearLayout.LayoutParams textParam = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                                    LinearLayout.LayoutParams textParam = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                                     textParam.setMargins(80,20,80,10);
                                     info_linear.setLayoutParams(textParam);
                                     info_linear.setPadding(80,20,80,10);
@@ -326,10 +338,29 @@ public class ProfileFragment extends Fragment {
                                     line.setVisibility(View.INVISIBLE);
                                     info_linear.addView(line);
                                     info_linear.addView(comment);
-                                    comment.setTag(k);
+                                    LinearLayout button_linear = new LinearLayout(getActivity());
+                                    button_linear.setOrientation(LinearLayout.HORIZONTAL);
+                                    button_linear.setGravity(Gravity.CENTER);
+                                    LinearLayout.LayoutParams button_linear_para = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                                    button_linear.setLayoutParams(button_linear_para);
+                                    button_linear_para.setMargins(0,20,0,20);
+                                    LinearLayout.LayoutParams button_para = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                                    button_para.setMargins(10,0,10,0);
+                                    Button edit_button = new Button(getActivity());
+                                    Button delete_button = new Button(getActivity());
+                                    edit_button.setText("Edit");
+                                    edit_button.setBackgroundColor(Color.GREEN);
+                                    delete_button.setText("Delete");
+                                    delete_button.setBackgroundColor(Color.RED);
+                                    edit_button.setLayoutParams(button_para);
+                                    delete_button.setLayoutParams(button_para);
+                                    button_linear.addView(edit_button);
+                                    button_linear.addView(delete_button);
+                                    info_linear.addView(button_linear);
+                                    delete_button.setTag(k);
 
                                     int finalCount = count-1;
-                                    comment.setOnClickListener(new View.OnClickListener() {
+                                    delete_button.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
                                             docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -339,16 +370,89 @@ public class ProfileFragment extends Fragment {
                                                         DocumentSnapshot document = task.getResult();
                                                         if(document.exists()){
                                                             Map<String,String> user_comments_group = (Map<String,String>) document.getData().get("Comments");
-                                                            user_comments_group.remove(comment.getTag());
+                                                            user_comments_group.remove(delete_button.getTag());
                                                             Map<String, Object> user_comment_list_update = new HashMap<>();
                                                             user_comment_list_update.put("Comments", user_comments_group);
                                                             docRef.update(user_comment_list_update);
                                                             CollectionReference CommentsRef = db.collection("Comments");
-                                                            CommentsRef.document(comment.getTag().toString()).delete();
+                                                            CommentsRef.document(delete_button.getTag().toString()).delete();
                                                             info_linear.removeView(comment);
-                                                            int tmp = finalCount;
+                                                            info_linear.removeView(button_linear);
+                                                            int tmp = Integer.parseInt(mComments.getText().toString().substring(13));
                                                             tmp-=1;
                                                             mComments.setText("📋 Comments: "+tmp);
+                                                        }
+                                                    }
+                                                }
+                                            });
+                                        }
+                                    });
+                                    edit_button.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                    if(task.isSuccessful()){
+                                                        DocumentSnapshot document = task.getResult();
+                                                        if(document.exists()){
+                                                            Map<String,String> user_comments_group = (Map<String,String>) document.getData().get("Comments");
+                                                            AlertDialog.Builder edit_builder = new AlertDialog.Builder(getActivity());
+                                                            edit_builder.setTitle("Edit Comment");
+                                                            LinearLayout comment_edit_window = new LinearLayout(getActivity());
+                                                            comment_edit_window.setOrientation(LinearLayout.VERTICAL);
+                                                            EditText comment_text_for_edit = new EditText(getActivity());
+                                                            comment_text_for_edit.setText(user_comments_group.get(delete_button.getTag()));
+                                                            comment_edit_window.addView(comment_text_for_edit);
+                                                            edit_builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                                                @Override
+                                                                public void onClick(DialogInterface dialog, int which) {
+
+                                                                }
+                                                            });
+                                                            edit_builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                                                                @Override
+                                                                public void onClick(DialogInterface dialog, int which) {
+                                                                    //not null
+                                                                    if(comment_text_for_edit.getText().toString().length()>0){
+                                                                        user_comments_group.put(delete_button.getTag().toString(),comment_text_for_edit.getText().toString());
+                                                                        Map<String, Object> user_comment_list_update = new HashMap<>();
+                                                                        user_comment_list_update.put("Comments", user_comments_group);
+                                                                        docRef.update(user_comment_list_update);
+                                                                        CollectionReference CommentsRef = db.collection("Comments");
+                                                                        CommentsRef.document(delete_button.getTag().toString()).update("content",comment_text_for_edit.getText().toString());
+                                                                        String old_comment_content = comment.getText().toString();
+                                                                        int comment_counter = 0;
+                                                                        for(int i =0;i<old_comment_content.length();i++){
+                                                                            if(old_comment_content.charAt(i)!='.'){
+                                                                                comment_counter++;
+                                                                            }
+                                                                            else{
+                                                                                break;
+                                                                            }
+                                                                        }
+                                                                        comment.setText(old_comment_content.substring(0,comment_counter)+". "+comment_text_for_edit.getText().toString());
+                                                                    }
+                                                                    else{
+                                                                        Map<String,String> user_comments_group = (Map<String,String>) document.getData().get("Comments");
+                                                                        user_comments_group.remove(delete_button.getTag());
+                                                                        Map<String, Object> user_comment_list_update = new HashMap<>();
+                                                                        user_comment_list_update.put("Comments", user_comments_group);
+                                                                        docRef.update(user_comment_list_update);
+                                                                        CollectionReference CommentsRef = db.collection("Comments");
+                                                                        CommentsRef.document(delete_button.getTag().toString()).delete();
+                                                                        info_linear.removeView(comment);
+                                                                        info_linear.removeView(button_linear);
+                                                                        int tmp = Integer.parseInt(mComments.getText().toString().substring(13));
+                                                                        tmp-=1;
+                                                                        mComments.setText("📋 Comments: "+tmp);
+                                                                    }
+                                                                }
+                                                            });
+
+                                                            edit_builder.setView(comment_edit_window);
+                                                            edit_builder.show();
+
                                                         }
                                                     }
                                                 }
@@ -365,7 +469,8 @@ public class ProfileFragment extends Fragment {
                                         }
                                     }
                                 });
-                                builder.setView(info_linear);
+                                info_scroll.addView(info_linear);
+                                builder.setView(info_scroll);
                                 builder.show();
                             }
                         }

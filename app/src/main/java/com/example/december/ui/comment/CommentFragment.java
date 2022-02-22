@@ -1,9 +1,13 @@
 package com.example.december.ui.comment;
 
 import android.app.ProgressDialog;
+import android.content.res.Resources;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -190,6 +194,18 @@ public class CommentFragment extends Fragment {
                         });
                     }
                 });
+            }
+        });
+
+        commentText.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                System.out.println(commentText.getText());
+                System.out.println(getString(R.string.comment_comment));
+                if(commentText.getText().toString().equals(getString(R.string.comment_comment).toString())) {
+                    commentText.setText("");
+                }
+                return false;
             }
         });
 
