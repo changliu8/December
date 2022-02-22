@@ -118,184 +118,6 @@ public class PetsFragment extends Fragment implements AdapterView.OnItemSelected
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         pets_collection.setAdapter(adapter);
         pets_collection.setOnItemSelectedListener(this);
-
-        /*
-        ProgressDialog pd = new ProgressDialog(getActivity());
-        pd.setMessage("🐕 Getting our new members 🐈");
-        pd.show();
-
-        storageRef = storage.getReference("pets");
-        storageRef.listAll().addOnSuccessListener(new OnSuccessListener<ListResult>() {
-            @Override
-            public void onSuccess(ListResult listResult) {
-                for (StorageReference prefix : listResult.getPrefixes()) {
-                    prefix.listAll().addOnSuccessListener(new OnSuccessListener<ListResult>() {
-                        @Override
-                        public void onSuccess(ListResult listResult) {
-                            for(StorageReference pic : listResult.getItems()){
-                                if(pic.toString().contains("cat")){
-                                    try {
-                                    System.out.println(pic);
-                                    File localfile = File.createTempFile("tempfile",".jgp");
-                                    pic.getFile(localfile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                                        @Override
-                                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                                            Bitmap bitmap = BitmapFactory.decodeFile(localfile.getAbsolutePath());
-                                            LinearLayout pet_linear = new LinearLayout(getActivity());
-                                            pet_linear.setOrientation(LinearLayout.HORIZONTAL);
-                                            pet_linear.setGravity(Gravity.CENTER);
-                                            pet_linear.setBackgroundColor(Color.WHITE);
-                                            LinearLayout.LayoutParams Params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                                            pet_linear.setLayoutParams(Params);
-                                            ImageView pet_img = new ImageView(getActivity());
-                                            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(400, 400);
-                                            pet_img.setLayoutParams(layoutParams);
-                                            pet_img.setImageBitmap(bitmap);
-
-                                            LinearLayout.LayoutParams text_param = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT,1);
-                                            text_param.setMargins(10,10,10,10);
-                                            //new add
-                                            LinearLayout pet_info_linear = new LinearLayout(getActivity());
-                                            pet_info_linear.setOrientation(LinearLayout.VERTICAL);
-                                            pet_info_linear.setPadding(10,10,10,10);
-                                            pet_info_linear.setBackground(getResources().getDrawable(R.drawable.my_border));
-                                            pet_info_linear.setLayoutParams(text_param);
-                                            //new add done
-                                            TextView pet_name = new TextView(getActivity());
-                                            pet_name.setGravity(Gravity.CENTER);
-                                            pet_name.setLayoutParams(text_param);
-                                            //pet_name.setBackground(getResources().getDrawable(R.drawable.my_border));
-                                            //pet_name.setPadding(10,10,10,10);
-                                            TextView pet_age = new TextView(getActivity());
-                                            pet_age.setGravity(Gravity.CENTER);
-                                            pet_age.setLayoutParams(text_param);
-
-                                            TextView pet_type = new TextView(getActivity());
-                                            pet_type.setGravity(Gravity.CENTER);
-                                            pet_type.setLayoutParams(text_param);
-
-                                            TextView pet_gender = new TextView(getActivity());
-                                            pet_gender.setGravity(Gravity.CENTER);
-                                            pet_gender.setLayoutParams(text_param);
-
-                                            pet_info_linear.addView(pet_name);
-                                            pet_info_linear.addView(pet_age);
-                                            pet_info_linear.addView(pet_type);
-                                            pet_info_linear.addView(pet_gender);
-
-                                            int count = 0;
-                                            String name = "";
-                                            for(int i =0;i<pic.toString().getBytes().length;i++){
-                                                if(pic.toString().charAt(i)=='/'){
-                                                    count++;
-                                                }
-                                                if(count==4){
-                                                    name+=pic.toString().charAt(i);
-                                                }
-                                            }
-                                            name = name.substring(1);
-                                            DocumentReference docRef = db.collection("Pets").document(name);
-                                            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                                    if (task.isSuccessful()) {
-                                                        DocumentSnapshot document = task.getResult();
-                                                        if (document.exists()) {
-                                                            pet_name.setText("Name : "+document.getData().get("Name").toString());
-                                                            pet_age.setText("Age : "+document.getData().get("Age").toString());
-                                                            pet_type.setText("Type : "+document.getData().get("Type").toString());
-                                                            pet_gender.setText("Gender : "+document.getData().get("Gender").toString());
-                                                        } else {
-                                                            pet_name.setText("JESUS");
-                                                        }
-                                                    } else {
-                                                        pet_name.setText(task.getException().toString());
-                                                    }
-                                                }
-                                            }).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                                    if(pd.isShowing()){
-                                                        pd.dismiss();
-                                                    }
-                                                }
-                                            });
-                                            //pet_name.setText(name);
-                                            TextView left = new TextView(getActivity());
-                                            TextView right = new TextView(getActivity());
-                                            left.setText("5555");
-                                            right.setText("5555");
-                                            right.setVisibility(View.INVISIBLE);
-                                            left.setVisibility(View.INVISIBLE);
-                                            pet_linear.addView(left);
-                                            pet_linear.addView(pet_img);
-                                            pet_linear.addView(pet_info_linear);
-                                            pet_linear.addView(right);
-                                            petsLayout.addView(pet_linear);
-                                            TextView invisible = new TextView(getActivity());
-                                            invisible.setText("1222222222222222222222");
-                                            invisible.setVisibility(View.INVISIBLE);
-                                            petsLayout.addView(invisible);
-                                            dogs_img.add(bitmap);
-                                            String finalName = name;
-                                            pet_linear.setOnClickListener(new View.OnClickListener() {
-                                                @Override
-                                                public void onClick(View v) {
-                                                    PopupWindow info_pop = new PopupWindow(getActivity());
-                                                    info_pop.showAtLocation(pet_linear,Gravity.CENTER,500,500);
-                                                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                                                    builder.setTitle(finalName);
-                                                    LinearLayout info_linear = new LinearLayout(getActivity());
-                                                    info_linear.setOrientation(LinearLayout.VERTICAL);
-                                                    ImageView pet_img = new ImageView(getActivity());
-                                                    pet_img.setImageBitmap(bitmap);
-                                                    TextView pet_info = new TextView(getActivity());
-                                                    docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                                        @Override
-                                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                                            if(task.isSuccessful()){
-                                                                DocumentSnapshot document = task.getResult();
-                                                                if(document.exists()) {
-                                                                    pet_info.setText(document.getData().get("info").toString());
-                                                                }
-                                                            }
-                                                        }
-                                                    });
-                                                    pet_info.setBackground(getResources().getDrawable(R.drawable.my_border));
-                                                    pet_info.setPadding(40,40,40,40);
-                                                    Button button = new Button(getActivity());
-                                                    button.setText("DONATE");
-                                                    button.setTag(finalName);
-                                                    button.setOnClickListener(new View.OnClickListener() {
-                                                        @Override
-                                                        public void onClick(View v) {
-                                                            pets_name=finalName;
-                                                            ppButton.callOnClick();
-                                                        }
-                                                    });
-                                                    pet_info.setLayoutParams(text_param);
-                                                    info_linear.addView(pet_img);
-                                                    info_linear.addView(pet_info);
-                                                    info_linear.addView(button);
-                                                    builder.setView(info_linear);
-                                                    builder.show();
-                                                }
-                                            });
-                                        }
-
-                                    });
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }}
-                    });
-                }
-            }
-        });
-
-         */
-
         petsViewModel = new ViewModelProvider(this).get(PetsViewModel.class);
 
         CheckoutConfig config = new CheckoutConfig(
@@ -421,11 +243,9 @@ public class PetsFragment extends Fragment implements AdapterView.OnItemSelected
                         public void onSuccess(ListResult listResult) {
                             ArrayList<Bitmap> curr_pet_image = new ArrayList<>();
                             for(StorageReference pic : listResult.getItems()) {
-                                if (pic.toString().toUpperCase().contains(choice.toUpperCase(Locale.ROOT))) {
+                                if (pic.toString().toUpperCase().contains(choice.toUpperCase())) {
                                     if (pic.toString().toUpperCase().contains("Cover".toUpperCase())) {
-                                        System.out.println(choice);
                                         try {
-                                            System.out.println(pic);
                                             File localfile = File.createTempFile("tempfile", ".jgp");
                                             pic.getFile(localfile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                                                 @Override
@@ -565,15 +385,18 @@ public class PetsFragment extends Fragment implements AdapterView.OnItemSelected
                                                                 }
                                                             });
                                                             pet_info.setLayoutParams(text_param);
-                                                            info_linear.addView(pet_img);
                                                             pet_img.setOnClickListener(new View.OnClickListener() {
                                                                 @Override
                                                                 public void onClick(View v) {
-                                                                    pet_img.setImageBitmap(curr_pet_image.get(0));
-                                                                    curr_pet_image.add(curr_pet_image.get(0));
-                                                                    curr_pet_image.remove(0);
+                                                                    System.out.println("size is "+curr_pet_image.size());
+                                                                    if(curr_pet_image.size()>0) {
+                                                                        pet_img.setImageBitmap(curr_pet_image.get(0));
+                                                                        curr_pet_image.add(curr_pet_image.get(0));
+                                                                        curr_pet_image.remove(0);
+                                                                    }
                                                                 }
                                                             });
+                                                            info_linear.addView(pet_img);
                                                             info_linear.addView(pet_info);
                                                             info_linear.addView(button);
                                                             builder.setView(info_linear);
@@ -588,6 +411,7 @@ public class PetsFragment extends Fragment implements AdapterView.OnItemSelected
                                         }
                                     }
                                     else{
+                                        System.out.println("I am not able to be here");
                                         try {
                                             File localfile = File.createTempFile("tempfile", ".jgp");
                                             pic.getFile(localfile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
@@ -600,7 +424,6 @@ public class PetsFragment extends Fragment implements AdapterView.OnItemSelected
                                         } catch (IOException e) {
                                             e.printStackTrace();
                                         }
-
                                     }
                                 } else if (choice.equals("All")) {
                                     if (pic.toString().toUpperCase().contains("Cover".toUpperCase())) {
@@ -744,6 +567,16 @@ public class PetsFragment extends Fragment implements AdapterView.OnItemSelected
                                                             }
                                                         });
                                                         pet_info.setLayoutParams(text_param);
+                                                        pet_img.setOnClickListener(new View.OnClickListener() {
+                                                            @Override
+                                                            public void onClick(View v) {
+                                                                if(curr_pet_image.size()>0) {
+                                                                    pet_img.setImageBitmap(curr_pet_image.get(0));
+                                                                    curr_pet_image.add(curr_pet_image.get(0));
+                                                                    curr_pet_image.remove(0);
+                                                                }
+                                                            }
+                                                        });
                                                         info_linear.addView(pet_img);
                                                         info_linear.addView(pet_info);
                                                         info_linear.addView(button);
@@ -758,6 +591,20 @@ public class PetsFragment extends Fragment implements AdapterView.OnItemSelected
                                         e.printStackTrace();
                                     }
                                 }
+                                    else{
+                                        try {
+                                            File localfile = File.createTempFile("tempfile", ".jgp");
+                                            pic.getFile(localfile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                                                @Override
+                                                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                                    Bitmap bitmap = BitmapFactory.decodeFile(localfile.getAbsolutePath());
+                                                    curr_pet_image.add(bitmap);
+                                                }
+                                            });
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
                             }
                             }}
                     });
