@@ -26,7 +26,7 @@
     <string name="hours"><b>Monday - Sunday:</b> 7 a.m. to 7 p.m.</string>
     <string-array name="pets_array">
         <item>All</item>
-        <item>cat</item>
+        <item>Cat</item>
         <item>Dog</item>
     </string-array>
     <string name="signout">Sign Out</string>
@@ -36,6 +36,7 @@
     <string name="proDonation">♥ Total Donation: N/A</string>
     <string name="proComment">📋 Comments: N/A</string>
     <string name="comment_comment">Comment:</string>
+    <string name="Register">Register</string>
 
 
 </resources>
