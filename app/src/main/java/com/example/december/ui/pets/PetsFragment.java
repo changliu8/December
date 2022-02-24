@@ -1,5 +1,7 @@
 package com.example.december.ui.pets;
 
+import static java.lang.Thread.sleep;
+
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -174,9 +176,12 @@ public class PetsFragment extends Fragment implements AdapterView.OnItemSelected
 
                                     }
                                 });
+                                /*
                                 if(ad.isShowing()){
                                     ad.dismiss();
                                 }
+
+                                 */
                                 builder.show();
                                 DocumentReference userRef = db.collection("Users").document(FirebaseAuth.getInstance().getCurrentUser().getEmail());
                                 userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -244,6 +249,17 @@ public class PetsFragment extends Fragment implements AdapterView.OnItemSelected
                             ArrayList<Bitmap> curr_pet_image = new ArrayList<>();
                             for(StorageReference pic : listResult.getItems()) {
                                 if (pic.toString().toUpperCase().contains(choice.toUpperCase())) {
+                                    new Thread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            try {
+                                                Thread.sleep(1500);
+                                                pd.dismiss();
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                    }).start();
                                     if (pic.toString().toUpperCase().contains("Cover".toUpperCase())) {
                                         try {
                                             File localfile = File.createTempFile("tempfile", ".jgp");
@@ -323,14 +339,13 @@ public class PetsFragment extends Fragment implements AdapterView.OnItemSelected
                                                                 pet_name.setText(task.getException().toString());
                                                             }
                                                         }
-                                                    }).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                                        @Override
-                                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                                            if (pd.isShowing()) {
-                                                                pd.dismiss();
-                                                            }
-                                                        }
                                                     });
+                                                    /*
+                                                    if (pd.isShowing()) {
+                                                        pd.dismiss();
+                                                    }
+
+                                                     */
                                                     //pet_name.setText(name);
                                                     TextView left = new TextView(getActivity());
                                                     TextView right = new TextView(getActivity());
@@ -411,7 +426,6 @@ public class PetsFragment extends Fragment implements AdapterView.OnItemSelected
                                         }
                                     }
                                     else{
-                                        System.out.println("I am not able to be here");
                                         try {
                                             File localfile = File.createTempFile("tempfile", ".jgp");
                                             pic.getFile(localfile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
@@ -426,6 +440,17 @@ public class PetsFragment extends Fragment implements AdapterView.OnItemSelected
                                         }
                                     }
                                 } else if (choice.equals("All")) {
+                                    new Thread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            try {
+                                                Thread.sleep(2500);
+                                                pd.dismiss();
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                    }).start();
                                     if (pic.toString().toUpperCase().contains("Cover".toUpperCase())) {
                                     try {
                                         System.out.println(pic);
@@ -505,15 +530,14 @@ public class PetsFragment extends Fragment implements AdapterView.OnItemSelected
                                                             pet_name.setText(task.getException().toString());
                                                         }
                                                     }
-                                                }).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                                    @Override
-                                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                                        if (pd.isShowing()) {
-                                                            pd.dismiss();
-                                                        }
-                                                    }
                                                 });
                                                 //pet_name.setText(name);
+                                                /*
+                                                if (pd.isShowing()) {
+                                                    pd.dismiss();
+                                                }
+
+                                                 */
                                                 TextView left = new TextView(getActivity());
                                                 TextView right = new TextView(getActivity());
                                                 left.setText("5555");
