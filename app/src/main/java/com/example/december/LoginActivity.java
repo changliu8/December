@@ -47,7 +47,7 @@ public class LoginActivity extends AppCompatActivity {
     private ImageButton mLoginButton;
     private Button mRegisterButton,mResetButton;
     private SignInButton mGoogleButton;
-    private EditText mEmail, mPassword;
+    private EditText mEmail,mPassword;
     FirebaseAuth fAuth;
     FirebaseUser fUser;
     private GoogleSignInClient mGoogleSignInClient;

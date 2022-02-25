@@ -68,6 +68,7 @@ public class RegisterActivity extends AppCompatActivity {
                                     data1.put("Donation",new ArrayList<String>());
                                     data1.put("TotalDonation","0.00");
                                     data1.put("Comments",new ArrayList<String>());
+                                    data1.put("id","0");
                                     users.document(fUser.getEmail()).set(data1);
                                 }
                                 else{
