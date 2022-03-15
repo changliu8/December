@@ -106,7 +106,8 @@ public class CommentFragment extends Fragment {
                         client_info_linear.addView(time_textview);
 
                         TextView user_comment_textview = new TextView(getActivity());
-                        user_comment_textview.setText("  "+document.get("content").toString());
+                        user_comment_textview.setPadding(10,0,10,0);
+                        user_comment_textview.setText(document.get("content").toString());
 
                         comment_linear.addView(client_info_linear);
                         comment_linear.addView(user_comment_textview);
@@ -164,7 +165,8 @@ public class CommentFragment extends Fragment {
                                         client_info_linear.addView(time_textview);
 
                                         TextView user_comment_textview = new TextView(getActivity());
-                                        user_comment_textview.setText("  "+document.get("content").toString());
+                                        user_comment_textview.setPadding(10,0,10,0);
+                                        user_comment_textview.setText(document.get("content").toString());
 
                                         comment_linear.addView(client_info_linear);
                                         comment_linear.addView(user_comment_textview);

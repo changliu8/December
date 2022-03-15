@@ -37,6 +37,8 @@
     <string name="proComment">📋 Comments: N/A</string>
     <string name="comment_comment">Comment:</string>
     <string name="Register">Register</string>
+    <string name="success_ok">OK</string>
+    <string name="Register_title">REGISTER</string>
 
 
 </resources>
