@@ -111,7 +111,7 @@ public class ProfileFragment extends Fragment{
         mEmail.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail().toString());
         user_icon = root.findViewById(R.id.user_icon);
         ProgressDialog pd = new ProgressDialog(getActivity());
-        pd.setMessage("Fetching...");
+        pd.setMessage("We are carefully checking your information");
         pd.show();
         String userEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail().toString();
 
@@ -125,7 +125,7 @@ public class ProfileFragment extends Fragment{
                     if (document.exists()) {
                         List<String> adopted_group = (List<String>) document.getData().get("Adopted");
                         Map<String,String> command_group = (Map<String,String>) document.getData().get("Comments");
-                        mAdopted.setText("🐕 Adopted Animals: "+adopted_group.size());
+                        mAdopted.setText("🐕 Adopted Pets: "+adopted_group.size());
                         mDonation.setText("❤ Total Donation: "+document.getData().get("TotalDonation").toString());
                         mComments.setText("📋 Comments: "+command_group.size());
                         if(document.getData().get("icon").toString().contains("1")){

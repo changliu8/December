@@ -199,7 +199,7 @@ public class PetsFragment extends Fragment implements AdapterView.OnItemSelected
                                                 }
 
                                                 List<String> donation_group = (List<String>) document.getData().get("Donation");
-                                                donation_group.add("10.00");
+                                                donation_group.add("12.99");
                                                 Map<String, Object> hopperUpdates = new HashMap<>();
                                                 hopperUpdates.put("Donation", donation_group);
                                                 userRef.update(hopperUpdates);
@@ -333,7 +333,7 @@ public class PetsFragment extends Fragment implements AdapterView.OnItemSelected
                                                                     pet_type.setText("Type : " + document.getData().get("Type").toString());
                                                                     pet_gender.setText("Gender : " + document.getData().get("Gender").toString());
                                                                 } else {
-                                                                    pet_name.setText("JESUS");
+                                                                    //pet_name.setText("");
                                                                 }
                                                             } else {
                                                                 pet_name.setText(task.getException().toString());
