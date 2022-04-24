@@ -5,18 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_paws"
-    tools:context=".ui.announcement.AnnouncementFragment">
+    tools:context=".ui.comment.CommentFragment"
+    android:windowSoftInputMode="adjustPan|adjustResize"
+    >
 
     <ScrollView
         android:id="@+id/commentsScroll"
-        android:layout_width="409dp"
-        android:layout_height="420dp"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="1dp"
-        android:layout_marginEnd="1dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_width="match_parent"
+        android:layout_height="450dp"
+        tools:ignore="SpeakableTextPresentCheck"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="1dp">
 
         <LinearLayout
             android:id="@+id/commentsLinear"
@@ -26,21 +25,34 @@
     </ScrollView>
 
     <LinearLayout
-        android:layout_width="409dp"
-        android:layout_height="228dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="1dp"
         android:gravity="center_horizontal"
         android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/commentsScroll"
-        tools:layout_editor_absoluteX="1dp">
+        app:layout_constraintVertical_bias="0.0">
 
-        <EditText
-            android:id="@+id/comment_text"
+
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:text="@string/comment_comment" />
+            android:gravity="center"
+            android:hint="Comment"
+            app:boxBackgroundColor="@color/white"
+            app:endIconMode="clear_text"
+            app:startIconDrawable="@drawable/ic_outline_comment_24">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/comment_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <Button
             android:id="@+id/submit_comment_button"

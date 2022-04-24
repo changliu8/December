@@ -1,5 +1,6 @@
 package com.example.december;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -20,7 +21,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class ResetActivity extends AppCompatActivity {
 
-    private Button mResetButton;
+    private Button mResetButton,mSuccessOKButton;
     private TextView mEmail,mResetHint,mResetText;
     private LinearLayout mResetLinear,mSuccessLinear;
     private ImageView img;
@@ -32,6 +33,7 @@ public class ResetActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reset);
         mResetButton = findViewById(R.id.reset_button);
+        mSuccessOKButton = findViewById(R.id.success_ok);
         mEmail = findViewById(R.id.reset_email_text);
         mResetHint = findViewById(R.id.reset_hint);
         mResetText = findViewById(R.id.reset_text);
@@ -84,6 +86,12 @@ public class ResetActivity extends AppCompatActivity {
                 }
 
 
+            }
+        });
+        mSuccessOKButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
             }
         });
     }

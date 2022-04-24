@@ -38,55 +38,52 @@
           android:textSize="30sp"
           android:textStyle="bold" />
 
-      <LinearLayout
+      <com.google.android.material.textfield.TextInputLayout
           android:layout_width="match_parent"
           android:layout_height="match_parent"
-          android:layout_marginTop="20dp"
           android:gravity="center"
-          android:orientation="horizontal">
+          app:boxBackgroundColor="@color/white"
+          app:startIconDrawable="@drawable/ic_outline_email_24"
+          android:hint="E-mail"
+          app:endIconMode="clear_text"
+          >
 
-        <TextView
-            android:layout_width="75dp"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="Email:" />
-
-        <EditText
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/lname"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Email"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
             android:ems="10"
-            android:inputType="textPersonName" />
+            android:inputType="textPersonName"
+            app:startIconContentDescription="ABC" />
+      </com.google.android.material.textfield.TextInputLayout>
 
-      </LinearLayout>
-
-      <LinearLayout
+      <com.google.android.material.textfield.TextInputLayout
           android:layout_width="match_parent"
           android:layout_height="match_parent"
           android:gravity="center"
-          android:orientation="horizontal">
+          app:boxBackgroundColor="@color/white"
+          app:endIconMode="password_toggle"
+          android:hint="Password"
+          app:startIconDrawable="@drawable/ic_outline_vpn_key_24">
 
-        <TextView
-            android:layout_width="75dp"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="Password:" />
-
-        <EditText
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/lpassword"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
             android:ems="10"
             android:inputType="textPassword" />
-
-      </LinearLayout>
+      </com.google.android.material.textfield.TextInputLayout>
 
       <com.google.android.gms.common.SignInButton
           android:id="@+id/sign_in_button"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:layout_marginTop="5dp" />
+          android:layout_marginTop="5dp"
+          android:visibility="invisible" />
 
       <ImageButton
           android:id="@+id/login"

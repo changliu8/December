@@ -1,5 +1,6 @@
 package com.example.december.ui.profile;
 
+import static android.app.Activity.RESULT_OK;
 import static java.lang.Thread.sleep;
 
 import android.app.AlertDialog;
@@ -9,7 +10,9 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,11 +34,15 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Context;
+import android.content.ContentResolver;
+
 import com.example.december.LoginActivity;
 import com.example.december.R;
 import com.example.december.RegisterActivity;
 import com.example.december.databinding.FragmentProfileBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.api.Distribution;
@@ -47,7 +54,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.ListResult;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import org.w3c.dom.Text;
 
@@ -57,7 +66,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ProfileFragment extends Fragment {
+
+
+public class ProfileFragment extends Fragment{
+
+    private final int PICK_IMAGE_REQUEST = 22;
 
     private ProfileViewModel ProfileViewModel;
     private FragmentProfileBinding binding;
@@ -72,7 +85,11 @@ public class ProfileFragment extends Fragment {
     private LinearLayout mAdoptedLinear;
     private LinearLayout mDonationLinear;
     private LinearLayout mCommentsLinear;
+    private LinearLayout mInfoLinear;
     private Map<String,String> user_comments_group;
+    private ImageView user_icon;
+    private Uri filePath;
+    StorageReference storageReference;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -89,12 +106,15 @@ public class ProfileFragment extends Fragment {
         mAdoptedLinear = root.findViewById(R.id.profile_adopted_linear);
         mDonationLinear = root.findViewById(R.id.profile_donation_linear);
         mCommentsLinear = root.findViewById(R.id.profile_comment_linear);
-        mUsername.setText("UserName: "+FirebaseAuth.getInstance().getCurrentUser().getDisplayName().toString());
-        mEmail.setText("Email: "+FirebaseAuth.getInstance().getCurrentUser().getEmail().toString());
+        mInfoLinear = root.findViewById(R.id.personal_linear);
+        mUsername.setText(FirebaseAuth.getInstance().getCurrentUser().getDisplayName().toString());
+        mEmail.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail().toString());
+        user_icon = root.findViewById(R.id.user_icon);
         ProgressDialog pd = new ProgressDialog(getActivity());
-        pd.setMessage("Fetching...");
+        pd.setMessage("We are carefully checking your information");
         pd.show();
         String userEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail().toString();
+
 
         DocumentReference docRef = db.collection("Users").document(userEmail);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -105,9 +125,25 @@ public class ProfileFragment extends Fragment {
                     if (document.exists()) {
                         List<String> adopted_group = (List<String>) document.getData().get("Adopted");
                         Map<String,String> command_group = (Map<String,String>) document.getData().get("Comments");
-                        mAdopted.setText("🐕 Adopted Animals: "+adopted_group.size());
+                        mAdopted.setText("🐕 Adopted Pets: "+adopted_group.size());
                         mDonation.setText("❤ Total Donation: "+document.getData().get("TotalDonation").toString());
                         mComments.setText("📋 Comments: "+command_group.size());
+                        if(document.getData().get("icon").toString().contains("1")){
+                            StorageReference httpsReference = storage.getReferenceFromUrl("gs://december-eltbj.appspot.com/icon/"+document.getData().get("id").toString()+".jpg");
+                            try {
+                                File localfile = File.createTempFile("tempfile", ".jgp");
+                                httpsReference.getFile(localfile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                                    @Override
+                                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                        Bitmap bitmap = BitmapFactory.decodeFile(localfile.getAbsolutePath());
+                                        user_icon.setImageBitmap(bitmap);
+                                    }
+                                });
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
                         if (pd.isShowing()){
                             pd.dismiss();
                         }
@@ -116,6 +152,14 @@ public class ProfileFragment extends Fragment {
                 }
             }
         });
+
+        user_icon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SelectImage();
+            }
+        });
+
 
 
 
@@ -134,6 +178,9 @@ public class ProfileFragment extends Fragment {
         });
 
         //adopted Linear
+
+
+
         mAdoptedLinear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -488,4 +535,106 @@ public class ProfileFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            filePath = data.getData();
+
+            try {
+                //getting image from gallery
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), filePath);
+
+                //Setting image to ImageView
+                user_icon.setImageBitmap(bitmap);
+                uploadImage();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    // UploadImage method
+    private void SelectImage()
+    {
+
+        // Defining Implicit Intent to mobile gallery
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(
+                Intent.createChooser(
+                        intent,
+                        "Select Image from here..."),
+                PICK_IMAGE_REQUEST);
+    }
+
+    private void uploadImage()
+    {
+        if (filePath != null) {
+
+            // Code for showing progressDialog while uploading
+
+            // Defining the child of storageReference
+            StorageReference storageRef = storage.getReference();
+
+            DocumentReference docRef = db.collection("Users").document(FirebaseAuth.getInstance().getCurrentUser().getEmail().toString());
+            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()){
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            StorageReference ref
+                                    = storageRef
+                                    .child("icon/"+document.getData().get("id").toString()+".jpg");
+                            ref.putFile(filePath)
+                                    .addOnSuccessListener(
+                                            new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                                @Override
+                                                public void onSuccess(
+                                                        UploadTask.TaskSnapshot taskSnapshot)
+                                                {
+                                                    docRef.update("icon","1");
+                                                }
+                                            })
+
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e)
+                                        {
+                                            System.out.println("I am in failure");
+                                        }
+                                    })
+                                    .addOnProgressListener(
+                                            new OnProgressListener<UploadTask.TaskSnapshot>() {
+
+                                                // Progress Listener for loading
+                                                // percentage on the dialog box
+                                                @Override
+                                                public void onProgress(
+                                                        UploadTask.TaskSnapshot taskSnapshot)
+                                                {
+                                                    double progress
+                                                            = (100.0
+                                                            * taskSnapshot.getBytesTransferred()
+                                                            / taskSnapshot.getTotalByteCount());
+                                                }
+                                            });
+
+                        }
+
+                    }
+                }
+            });
+
+
+            // adding listeners on upload
+            // or failure of image
+
+        }
+    }
+
+
 }

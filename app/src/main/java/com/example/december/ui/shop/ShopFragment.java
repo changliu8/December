@@ -93,7 +93,7 @@ public class ShopFragment extends Fragment {
         mTotalText = root.findViewById(R.id.total);
         ppButton = root.findViewById(R.id.payPalButton);
         ProgressDialog pd = new ProgressDialog(getActivity());
-        pd.setMessage("Fetching...");
+        pd.setMessage("New inventory is on the way...");
         pd.show();
         storageRef.listAll().addOnSuccessListener(new OnSuccessListener<ListResult>() {
             @Override
@@ -127,6 +127,7 @@ public class ShopFragment extends Fragment {
                                             info_layout.setOrientation(LinearLayout.VERTICAL);
                                             info_layout.setGravity(Gravity.CENTER);
                                             TextView name_text = new TextView(getActivity());
+                                            name_text.setWidth(300);
                                             String item_name = "";
                                             int count = 0;
                                             for(int i =0;i<pic.toString().getBytes().length;i++){
@@ -149,7 +150,7 @@ public class ShopFragment extends Fragment {
                                                         if (document.exists()) {
                                                             price_text.setText(document.getData().get("price").toString());
                                                         } else {
-                                                            price_text.setText("JESUS");
+                                                            price_text.setText("");
                                                         }
                                                     } else {
                                                         price_text.setText(task.getException().toString());

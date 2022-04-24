@@ -30,13 +30,15 @@
         <item>Dog</item>
     </string-array>
     <string name="signout">Sign Out</string>
-    <string name="proName">UserName: N/A</string>
-    <string name="proEmail">Email: N/A</string>
+    <string name="proName">N/A</string>
+    <string name="proEmail">N/A</string>
     <string name="proAdopted">🐕 Adopted Animals: N/A</string>
     <string name="proDonation">♥ Total Donation: N/A</string>
     <string name="proComment">📋 Comments: N/A</string>
     <string name="comment_comment">Comment:</string>
     <string name="Register">Register</string>
+    <string name="success_ok">OK</string>
+    <string name="Register_title">REGISTER</string>
 
 
 </resources>
