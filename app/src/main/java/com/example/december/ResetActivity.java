@@ -58,11 +58,13 @@ public class ResetActivity extends AppCompatActivity {
 
                 String email = mEmail.getText().toString().trim();
                 if(!email.equals("")) {
+                    //send the user an email
                     if(Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                         fAuth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if(task.isSuccessful()){
+                                    //animation
                                     mResetText.startAnimation(disappear);
                                     mResetText.setVisibility(View.GONE);
                                     mResetLinear.startAnimation(disappear);

@@ -116,6 +116,7 @@ public class ProfileFragment extends Fragment{
         String userEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail().toString();
 
 
+        //retrieve data from firebase
         DocumentReference docRef = db.collection("Users").document(userEmail);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -168,6 +169,7 @@ public class ProfileFragment extends Fragment{
 
         final Button button = root.findViewById(R.id.profile_sign_out);
 
+        //sign out and to the login page
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -178,9 +180,6 @@ public class ProfileFragment extends Fragment{
         });
 
         //adopted Linear
-
-
-
         mAdoptedLinear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -569,7 +568,7 @@ public class ProfileFragment extends Fragment{
                         "Select Image from here..."),
                 PICK_IMAGE_REQUEST);
     }
-
+    //upload image to firebase
     private void uploadImage()
     {
         if (filePath != null) {

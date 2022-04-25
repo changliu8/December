@@ -224,7 +224,7 @@ public class ShopFragment extends Fragment {
                 }
             }
         });
-
+        //paypal method
         CheckoutConfig config = new CheckoutConfig(
                 getActivity().getApplication(),
                 YOUR_CLIENT_ID,
@@ -237,6 +237,7 @@ public class ShopFragment extends Fragment {
 
         PayPalCheckout.setConfig(config);
 
+        //paypal,creating order
         ppButton.setup(
                 new CreateOrder() {
                     @Override
@@ -262,6 +263,7 @@ public class ShopFragment extends Fragment {
                         createOrderActions.create(order, (CreateOrderActions.OnOrderCreated) null);
                     }
                 },
+                //paypal, update firebase if the payment went through
                 new OnApprove() {
                     @Override
                     public void onApprove(@NotNull Approval approval) {
