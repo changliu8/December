@@ -52,6 +52,7 @@ public class RegisterActivity extends AppCompatActivity {
                 UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                         .setDisplayName(name)
                         .build();
+                //add the user in firebase authentication
                 fAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -60,6 +61,7 @@ public class RegisterActivity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if(task.isSuccessful()){
+                                    //add default information under user on firebase
                                     CollectionReference users = db.collection("Users");
                                     Map<String, Object> data1 = new HashMap<>();
                                     data1.put("name", name);

@@ -70,6 +70,7 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onStart() {
+        //check the current status
         super.onStart();
         fAuth.addAuthStateListener(authStateListener);
     }
@@ -184,29 +185,11 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-
-
-
-        //改成ontextchangelistener
-        mPassword.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                    if(!mEmail.getText().toString().equals("") && !mPassword.getText().toString().equals("")){
-                        mLoginButton.setImageResource(R.drawable.test2);
-                        mLoginButton.setEnabled(true);
-                    }
-                    else{
-                        mLoginButton.setImageResource(R.drawable.test);
-                        mLoginButton.setEnabled(false);
-                    }
-            }
-        });
-
          */
 
         Animation animation = new TranslateAnimation(0,90,0,0);
         animation.setDuration(150);
-
+        //login button
         mLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -295,14 +278,6 @@ public class LoginActivity extends AppCompatActivity {
                         }
                     }
                 });
-    }
-
-    public void createRequest(){
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
     }
 
 

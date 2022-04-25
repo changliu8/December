@@ -73,12 +73,13 @@ public class CommentFragment extends Fragment {
         ProgressDialog pd = new ProgressDialog(getActivity());
         pd.setMessage("Pulling the latest comment");
         pd.show();
+        //retrive the data from firebase
         db.collection("Comments").orderBy("time").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if(task.isSuccessful()){
                     for(QueryDocumentSnapshot document : task.getResult()){
-
+                        //create new linear layout containing data just retrived from firebase
                         LinearLayout comment_linear = new LinearLayout(getActivity());
                         comment_linear.setOrientation(LinearLayout.VERTICAL);
 
@@ -123,6 +124,7 @@ public class CommentFragment extends Fragment {
         submitCommentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //update comment to firebase
                 Map<String, Object> comment = new HashMap<>();
                 String comment_content = commentText.getText().toString();
                 comment.put("content",comment_content);
@@ -198,7 +200,6 @@ public class CommentFragment extends Fragment {
                 });
             }
         });
-
         commentText.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -210,9 +211,6 @@ public class CommentFragment extends Fragment {
                 return false;
             }
         });
-
-
-
 
 
         return root;

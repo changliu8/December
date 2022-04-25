@@ -122,6 +122,7 @@ public class PetsFragment extends Fragment implements AdapterView.OnItemSelected
         pets_collection.setOnItemSelectedListener(this);
         petsViewModel = new ViewModelProvider(this).get(PetsViewModel.class);
 
+        //paypal method
         CheckoutConfig config = new CheckoutConfig(
                 getActivity().getApplication(),
                 YOUR_CLIENT_ID,
@@ -230,7 +231,7 @@ public class PetsFragment extends Fragment implements AdapterView.OnItemSelected
         super.onDestroyView();
         binding = null;
     }
-
+    //the filter that filter the type of pets
     public void onItemSelected(AdapterView<?> parent, View view,
                                int pos, long id) {
         String choice = pets_collection.getSelectedItem().toString();
@@ -238,6 +239,7 @@ public class PetsFragment extends Fragment implements AdapterView.OnItemSelected
         ProgressDialog pd = new ProgressDialog(getActivity());
         pd.setMessage("🐕 Getting our new members 🐈");
         pd.show();
+        //retrieve data from firebase
         storageRef = storage.getReference("pets");
         storageRef.listAll().addOnSuccessListener(new OnSuccessListener<ListResult>() {
             @Override

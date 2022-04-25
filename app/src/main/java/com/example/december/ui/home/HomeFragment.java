@@ -59,6 +59,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         mMapView.onCreate(mapViewBundle);
         mMapView.getMapAsync(this);
 
+        //invoke the phone app
         phoneTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -67,6 +68,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
             }
         });
 
+        //invoke the e-mail app
         emailTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -88,6 +90,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         binding = null;
     }
 
+    //invoke the phone app, ask for permission before calling
     public void callPhoneNumber()
     {
         try
@@ -132,6 +135,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         }
     }
 
+    //map field
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         LatLng location = new LatLng(45.3413898,-75.7090849);
