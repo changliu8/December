@@ -524,7 +524,7 @@ public class PetsFragment extends Fragment implements AdapterView.OnItemSelected
                                                                 pet_type.setText("Type : " + document.getData().get("Type").toString());
                                                                 pet_gender.setText("Gender : " + document.getData().get("Gender").toString());
                                                             } else {
-                                                                pet_name.setText("JESUS");
+                                                                pet_name.setText("");
                                                             }
                                                         } else {
                                                             pet_name.setText(task.getException().toString());
