@@ -28,7 +28,7 @@ public class PetsViewModel extends ViewModel {
                     if (document.exists()) {
                         mText.setValue(document.getData().get("ASD").toString());
                     } else {
-                        mText.setValue("");
+                        mText.setValue("Hi");
                     }
                 } else {
                         mText.setValue(task.getException().toString());
